@@ -1,6 +1,7 @@
 package com.example.enquetebackend.service;
 
 import com.example.enquetebackend.entity.Enquete;
+import com.example.enquetebackend.exceptions.ErroPadrao;
 import com.example.enquetebackend.repository.EnqueteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class EnqueteService {
     }
 
     public void salvar(Enquete enquete){
-        System.out.println(enquete);
+        if(obterEnqueteAtiva() != null) throw new ErroPadrao("Encerre a enquete ativa para poder criar outra.");
         repository.save(enquete);
     }
 }

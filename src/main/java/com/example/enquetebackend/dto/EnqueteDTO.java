@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EnqueteDTO {
-    private Long id;
+
     private String pergunta;
+
     private Integer tempo;
-    private Integer ativo;
 }

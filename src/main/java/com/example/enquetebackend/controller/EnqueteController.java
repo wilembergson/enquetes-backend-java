@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/enquete")
@@ -39,12 +40,11 @@ public class EnqueteController {
 
     @PostMapping
     public ResponseEntity<String> listarTeste(@RequestBody EnqueteDTO enqueteDTO){
-        System.out.println(enqueteDTO);
         Enquete enquete = new Enquete(
-                enqueteDTO.getId(),
+                UUID.randomUUID().toString(),
                 enqueteDTO.getPergunta(),
                 enqueteDTO.getTempo(),
-                enqueteDTO.getAtivo()
+                1
         );
         this.service.salvar(enquete);
         return new ResponseEntity<>("Enquete criada.", HttpStatus.CREATED);

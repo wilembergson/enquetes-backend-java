@@ -1,10 +1,11 @@
 package com.example.enquetebackend.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+
+import java.util.UUID;
 
 @Entity
 @Table(name="enquete")
@@ -17,7 +18,7 @@ public class Enquete {
 
     @Id
     @Column(name="id")
-    private Long id;
+    private String id;
 
     @Column(name="pergunta")
     private String pergunta;

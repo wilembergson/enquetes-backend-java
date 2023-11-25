@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -28,4 +29,7 @@ public class Enquete {
 
     @Column(name="ativo")
     private Integer ativo;
+
+    @Column(name="data_hora")
+    private LocalDateTime data_hora;
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -34,14 +35,16 @@ public class EnqueteService {
 
     public void encerrarEnquete(){
         Enquete enquete = obterEnqueteAtiva();
-        if(enquete == null) throw new ErroPadrao("Nenhuma enquete no momento.", HttpStatus.NOT_FOUND);
+        if(enquete == null)
+            throw new ErroPadrao("Nenhuma enquete no momento.", HttpStatus.NOT_FOUND);
         enquete.setAtivo(0);
         repository.save(enquete);
     }
 
     public void atualizarrEnquete(EnqueteDTO enqueteAtualizada){
         Enquete enquete = obterEnqueteAtiva();
-        if(enquete == null) throw new ErroPadrao("Nenhuma enquete no momento.", HttpStatus.NOT_FOUND);
+        if(enquete == null)
+            throw new ErroPadrao("Nenhuma enquete no momento.", HttpStatus.NOT_FOUND);
         enquete.setPergunta(enqueteAtualizada.getPergunta());
         enquete.setTempo(enqueteAtualizada.getTempo());
         repository.save(enquete);
@@ -52,7 +55,8 @@ public class EnqueteService {
                 UUID.randomUUID().toString(),
                 enqueteDTO.getPergunta(),
                 enqueteDTO.getTempo(),
-                1
+                1,
+                LocalDateTime.now()
         );
         if(obterEnqueteAtiva() != null)
             throw new ErroPadrao("Encerre a enquete ativa para poder criar outra.", HttpStatus.FORBIDDEN);

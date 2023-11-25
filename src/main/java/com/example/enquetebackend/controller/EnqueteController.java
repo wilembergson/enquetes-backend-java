@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/enquete")
@@ -33,20 +33,20 @@ public class EnqueteController {
     }
 
     @PutMapping("/encerrar")
-    public ResponseEntity<String> encerrar(){
+    public ResponseEntity<Object> encerrar(){
         service.encerrarEnquete();
-        return new ResponseEntity<>("Enquete encerrada.", HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("mensagem", "Enquete encerrada."), HttpStatus.OK);
+    }
+
+    @PutMapping("/atualizar")
+    public ResponseEntity<Object> atualizar(@RequestBody EnqueteDTO enqueteDTO){
+        service.atualizarrEnquete(enqueteDTO);
+        return new ResponseEntity<>(Map.of("mensagem", "Enquete atualizada com sucesso."), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<String> listarTeste(@RequestBody EnqueteDTO enqueteDTO){
-        Enquete enquete = new Enquete(
-                UUID.randomUUID().toString(),
-                enqueteDTO.getPergunta(),
-                enqueteDTO.getTempo(),
-                1
-        );
-        this.service.salvar(enquete);
-        return new ResponseEntity<>("Enquete criada.", HttpStatus.CREATED);
+    public ResponseEntity<Object> criar(@RequestBody EnqueteDTO enqueteDTO){
+        this.service.novaEnquete(enqueteDTO);
+        return new ResponseEntity<>(Map.of("mensagem", "Nova enquete criada."), HttpStatus.CREATED);
     }
 }

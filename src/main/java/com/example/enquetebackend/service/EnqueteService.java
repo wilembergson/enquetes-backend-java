@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -26,11 +27,14 @@ public class EnqueteService {
          return repository.findAll()
                  .stream()
                  .filter(enquete -> enquete.getAtivo() == 0)
+                 .sorted((enquete1, enquete2) -> enquete2.getData_hora().compareTo(enquete1.getData_hora()))
                  .collect(Collectors.toList());
     }
 
-    public Enquete obterEnqueteAtiva(){
-        return repository.encontrarPorAtiva(1);
+    public Enquete obterEnqueteAtiva() {
+        Optional<Enquete> enqueteAtivaOptional = repository.findByAtivo(1);
+        return enqueteAtivaOptional.orElse(null);
+
     }
 
     public void encerrarEnquete(){
@@ -59,7 +63,7 @@ public class EnqueteService {
                 LocalDateTime.now()
         );
         if(obterEnqueteAtiva() != null)
-            throw new ErroPadrao("Encerre a enquete ativa para poder criar outra.", HttpStatus.FORBIDDEN);
+            throw new ErroPadrao("Há uma enquete em votação. Encerre-a para poder criar outra.", HttpStatus.FORBIDDEN);
         repository.save(enquete);
     }
 }

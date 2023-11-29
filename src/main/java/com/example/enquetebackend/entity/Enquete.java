@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -32,4 +33,7 @@ public class Enquete {
 
     @Column(name="data_hora")
     private LocalDateTime data_hora;
+
+    //@OneToMany(mappedBy = "enquete", cascade = CascadeType.ALL)
+    //private List<Resposta> respotas;
 }

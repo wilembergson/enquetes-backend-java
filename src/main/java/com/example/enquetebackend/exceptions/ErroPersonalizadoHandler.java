@@ -10,5 +10,4 @@ public class ErroPersonalizadoHandler {
     public ResponseEntity<Object> handleResourceNotFoundException(ErroPadrao ex) {
         return ResponseEntity.status(ex.getStatusCode()).body(ex.messageError());
     }
-
 }

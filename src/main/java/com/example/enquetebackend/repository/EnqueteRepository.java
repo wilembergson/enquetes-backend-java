@@ -5,9 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface EnqueteRepository extends JpaRepository<Enquete, Long> {
+import java.util.Optional;
 
-    @Query("SELECT e FROM Enquete e WHERE e.ativo = :ativo")
-    Enquete encontrarPorAtiva(int ativo);
+@Repository
+public interface EnqueteRepository extends JpaRepository<Enquete, String> {
+
+    /*@Query("SELECT e FROM Enquete e WHERE e.ativo = :ativo")
+    Object encontrarPorAtiva(int ativo);*/
+
+    Optional<Enquete> findByAtivo(Integer ativo);
 }

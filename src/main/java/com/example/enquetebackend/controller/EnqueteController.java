@@ -28,8 +28,9 @@ public class EnqueteController {
     }
 
     @GetMapping("/ativa")
-    public Enquete ativa(){
-        return service.obterEnqueteAtiva();
+    public ResponseEntity<Enquete> ativa(){
+        Enquete enquete = service.obterEnqueteAtiva();
+        return  ResponseEntity.ok(enquete);
     }
 
     @PutMapping("/encerrar")

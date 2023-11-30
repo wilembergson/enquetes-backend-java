@@ -11,8 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class RespostaService {
@@ -39,5 +41,15 @@ public class RespostaService {
                 enquete
         );
         respostaRepository.save(resposta);
+    }
+
+    public List<Resposta> respostasPorEnqueteId(String enquete_id){
+        Optional<Enquete> enquete = enqueteRepository.findById(enquete_id);
+        if(enquete.isEmpty()) throw new ErroPadrao("Enquete não encontrada.", HttpStatus.NOT_FOUND);
+        List<Resposta> respostas = respostaRepository.findAll()
+                .stream()
+                .filter(resposta -> resposta.getEnquete().getId() == enquete_id)
+                .collect(Collectors.toList());
+        return respostas;
     }
 }

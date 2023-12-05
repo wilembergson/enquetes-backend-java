@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RespostaDTO {
+public class VotoDTO {
 
     private String conteudo;
 

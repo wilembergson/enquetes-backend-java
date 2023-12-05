@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name="enquete")
+@Table(name="AGO_ENQUETE")
 @Data
 @Builder
 @ToString
@@ -19,21 +19,18 @@ import java.util.UUID;
 public class Enquete {
 
     @Id
-    @Column(name="id")
+    @Column(name="ID")
     private String id;
 
-    @Column(name="pergunta")
+    @Column(name="PERGUNTA")
     private String pergunta;
 
-    @Column(name="tempo")
+    @Column(name="TEMPO")
     private Integer tempo;
 
-    @Column(name="ativo")
+    @Column(name="ATIVO")
     private Integer ativo;
 
-    @Column(name="data_hora")
+    @Column(name="DT_CADASTRO")
     private LocalDateTime data_hora;
-
-    //@OneToMany(mappedBy = "enquete", cascade = CascadeType.ALL)
-    //private List<Resposta> respotas;
 }

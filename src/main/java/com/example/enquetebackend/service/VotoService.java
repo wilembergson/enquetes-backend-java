@@ -30,7 +30,7 @@ public class VotoService {
 
     public void novoVoto(VotoDTO votoDTO){
         Optional<Enquete> enqueteop = enqueteRepository.findByAtivo(1);
-        if(enqueteop.isEmpty()) throw new ErroPadrao("Enquete encerrada.", HttpStatus.NOT_FOUND);
+        if(enqueteop.isEmpty()) throw new ErroPadrao("Nenhuma enquete em votação no momento.", HttpStatus.NOT_FOUND);
         Enquete enquete = enqueteop.get();
         Voto voto;
         List<Voto> listaVotos = votosPorEnqueteId(enquete.getId());

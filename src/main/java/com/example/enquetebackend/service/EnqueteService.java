@@ -45,12 +45,12 @@ public class EnqueteService {
         repository.save(enquete);
     }
 
-    public void atualizarrEnquete(EnqueteDTO enqueteAtualizada){
+    public void atualizarrEnquete(Integer tempo){
         Enquete enquete = obterEnqueteAtiva();
         if(enquete == null)
             throw new ErroPadrao("Nenhuma enquete no momento.", HttpStatus.NOT_FOUND);
-        enquete.setPergunta(enqueteAtualizada.getPergunta());
-        enquete.setTempo(enqueteAtualizada.getTempo());
+        //enquete.setPergunta(enqueteAtualizada.getPergunta());
+        enquete.setTempo(tempo);
         repository.save(enquete);
     }
 

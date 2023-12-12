@@ -39,9 +39,9 @@ public class EnqueteController {
         return new ResponseEntity<>(Map.of("mensagem", "Enquete encerrada."), HttpStatus.OK);
     }
 
-    @PutMapping("/atualizar")
-    public ResponseEntity<Object> atualizar(@RequestBody EnqueteDTO enqueteDTO){
-        service.atualizarrEnquete(enqueteDTO);
+    @PutMapping("/atualizar/{tempo}")
+    public ResponseEntity<Object> atualizar(@PathVariable Integer tempo){
+        service.atualizarrEnquete(tempo);
         return new ResponseEntity<>(Map.of("mensagem", "Enquete atualizada com sucesso."), HttpStatus.OK);
     }
 

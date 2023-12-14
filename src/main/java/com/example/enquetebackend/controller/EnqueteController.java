@@ -42,7 +42,7 @@ public class EnqueteController {
     @PutMapping("/atualizar/{tempo}")
     public ResponseEntity<Object> atualizar(@PathVariable Integer tempo){
         service.atualizarrEnquete(tempo);
-        return new ResponseEntity<>(Map.of("mensagem", "Enquete atualizada com sucesso."), HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("mensagem", "Tempo ajustado com sucesso."), HttpStatus.OK);
     }
 
     @PostMapping

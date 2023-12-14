@@ -49,7 +49,6 @@ public class EnqueteService {
         Enquete enquete = obterEnqueteAtiva();
         if(enquete == null)
             throw new ErroPadrao("Nenhuma enquete no momento.", HttpStatus.NOT_FOUND);
-        //enquete.setPergunta(enqueteAtualizada.getPergunta());
         enquete.setTempo(tempo);
         repository.save(enquete);
     }

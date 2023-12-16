@@ -54,15 +54,15 @@ public class EnqueteService {
     }
 
     public void novaEnquete(EnqueteDTO enqueteDTO){
+        if(obterEnqueteAtiva() != null)
+            throw new ErroPadrao("Há uma enquete em votação. Encerre-a para poder criar outra.", HttpStatus.FORBIDDEN);
         Enquete enquete = new Enquete(
-                UUID.randomUUID().toString(),
+                Math.toIntExact(repository.count()) + 1,
                 enqueteDTO.getPergunta(),
                 enqueteDTO.getTempo(),
                 1,
                 LocalDateTime.now()
         );
-        if(obterEnqueteAtiva() != null)
-            throw new ErroPadrao("Há uma enquete em votação. Encerre-a para poder criar outra.", HttpStatus.FORBIDDEN);
         repository.save(enquete);
     }
 }

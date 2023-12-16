@@ -20,7 +20,7 @@ public class Enquete {
 
     @Id
     @Column(name="ID")
-    private String id;
+    private Integer id;
 
     @Column(name="PERGUNTA")
     private String pergunta;

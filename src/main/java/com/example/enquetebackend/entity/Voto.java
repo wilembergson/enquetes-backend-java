@@ -1,12 +1,13 @@
 package com.example.enquetebackend.entity;
 
+import com.example.enquetebackend.util.RespostasEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="AGO_VOTOS")
+@Table(name="AGO_VOTO")
 @Data
 @Builder
 @ToString
@@ -15,10 +16,10 @@ import java.time.LocalDateTime;
 public class Voto {
     @Id
     @Column(name = "ID")
-    private String id;
+    private Integer id;
 
     @Column(name = "RESPOSTA")
-    private String conteudo;
+    private String resposta;
 
     @Column(name = "CRM")
     private String crm;
@@ -32,4 +33,8 @@ public class Voto {
     @ManyToOne
     @JoinColumn(name="ID_ENQUETE")
     private Enquete enquete;
+
+    public void setResposta(Integer idResposta){
+        this.resposta = RespostasEnum.getById(idResposta).getDescricao();
+    }
 }

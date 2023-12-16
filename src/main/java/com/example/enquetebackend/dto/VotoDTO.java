@@ -9,11 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class VotoDTO {
 
-    private String conteudo;
+    private Integer idResposta;
 
     private String crm;
 
     private String nome;
-
-    private String enquete_id;
 }

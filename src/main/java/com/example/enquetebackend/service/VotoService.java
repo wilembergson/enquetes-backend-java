@@ -6,6 +6,7 @@ import com.example.enquetebackend.entity.Voto;
 import com.example.enquetebackend.exceptions.ErroPadrao;
 import com.example.enquetebackend.repository.EnqueteRepository;
 import com.example.enquetebackend.repository.VotoRespository;
+import com.example.enquetebackend.util.RespostasEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,12 @@ import java.util.stream.Collectors;
 @Service
 public class VotoService {
 
-    private final VotoRespository votoRespository;
+    private final VotoRespository votoRepository;
     private final EnqueteRepository enqueteRepository;
 
     @Autowired
     public VotoService(VotoRespository respostaRepository, EnqueteRepository enqueteRepository){
-        this.votoRespository = respostaRepository;
+        this.votoRepository = respostaRepository;
         this.enqueteRepository = enqueteRepository;
     }
 
@@ -38,26 +39,31 @@ public class VotoService {
                 .stream()
                 .filter(item -> item.getCrm().equals(votoDTO.getCrm()))
                 .findFirst();
+        //Um caso especial foi encontrado, validação feita para impedir que ocorra novamente
+        Integer idNew = Math.toIntExact(votoRepository.count()) + 1;
+        if(idNew == 2 && !(votoRepository.findById(2).isEmpty()))
+            idNew += 1;
         if(votoExistente.isPresent()){
             voto = votoExistente.get();
-            voto.setConteudo(votoDTO.getConteudo());
+            voto.setResposta(votoDTO.getIdResposta());
         }else{
             voto = new Voto(
-                    UUID.randomUUID().toString(),
-                    votoDTO.getConteudo(),
+                    idNew,
+                    RespostasEnum.getById(votoDTO.getIdResposta()).getDescricao(),
                     votoDTO.getCrm(),
                     votoDTO.getNome(),
                     LocalDateTime.now(),
                     enquete
             );
         }
-        votoRespository.save(voto);
+        System.out.println(voto);
+        votoRepository.save(voto);
     }
 
-    public List<Voto> votosPorEnqueteId(String enquete_id){
+    public List<Voto>  votosPorEnqueteId(Integer enquete_id){
         Optional<Enquete> enquete = enqueteRepository.findById(enquete_id);
         if(enquete.isEmpty()) throw new ErroPadrao("Enquete não encontrada.", HttpStatus.NOT_FOUND);
-        List<Voto> respostas = votoRespository.findAll()
+        List<Voto> respostas = votoRepository.findAll()
                 .stream()
                 .filter(resposta -> resposta.getEnquete().getId().equals(enquete_id))
                 .collect(Collectors.toList());

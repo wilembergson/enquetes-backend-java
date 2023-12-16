@@ -23,12 +23,13 @@ public class VotoController {
 
     @PostMapping
     public ResponseEntity<Object> novaResposta(@RequestBody VotoDTO respostaDTO){
+        System.out.println(respostaDTO);
         this.service.novoVoto(respostaDTO);
         return new ResponseEntity<>(Map.of("mensagem", "Novo voto adicionado."), HttpStatus.CREATED);
     }
 
     @GetMapping("/listar-por-enquete/{enquete_id}")
-    public ResponseEntity<List<Voto>> listarRespostasPorEnqueteId(@PathVariable  String enquete_id){
+    public ResponseEntity<List<Voto>> listarRespostasPorEnqueteId(@PathVariable  Integer enquete_id){
         return new ResponseEntity<>(service.votosPorEnqueteId(enquete_id), HttpStatus.OK);
     }
 }

@@ -56,7 +56,6 @@ public class VotoService {
                     enquete
             );
         }
-        System.out.println(voto);
         votoRepository.save(voto);
     }
 

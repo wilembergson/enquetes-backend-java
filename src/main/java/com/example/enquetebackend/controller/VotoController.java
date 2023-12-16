@@ -23,7 +23,6 @@ public class VotoController {
 
     @PostMapping
     public ResponseEntity<Object> novaResposta(@RequestBody VotoDTO respostaDTO){
-        System.out.println(respostaDTO);
         this.service.novoVoto(respostaDTO);
         return new ResponseEntity<>(Map.of("mensagem", "Novo voto adicionado."), HttpStatus.CREATED);
     }

@@ -1,6 +1,7 @@
 package com.example.enquetebackend.entity;
 
 import com.example.enquetebackend.util.RespostasEnum;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,6 +33,7 @@ public class Voto {
 
     @ManyToOne
     @JoinColumn(name="ID_ENQUETE")
+    @JsonBackReference
     private Enquete enquete;
 
     public void setResposta(Integer idResposta){

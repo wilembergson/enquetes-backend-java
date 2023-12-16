@@ -1,5 +1,6 @@
 package com.example.enquetebackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -31,6 +32,13 @@ public class Enquete {
     @Column(name="ATIVO")
     private Integer ativo;
 
+    @Column(name="EXIBIR_RESULTADO")
+    private Integer exibirResultado;
+
     @Column(name="DT_CADASTRO")
     private LocalDateTime data_hora;
+
+    @OneToMany(mappedBy = "enquete", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Voto> votos;
 }

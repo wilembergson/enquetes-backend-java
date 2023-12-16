@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface EnqueteRepository extends JpaRepository<Enquete, Integer> {
 
     Optional<Enquete> findByAtivo(Integer ativo);
+
+    Optional<Enquete> findByExibirResultado(Integer exibirResultado);
 }

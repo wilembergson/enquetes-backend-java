@@ -34,7 +34,11 @@ public class EnqueteService {
     public Enquete obterEnqueteAtiva() {
         Optional<Enquete> enqueteAtivaOptional = repository.findByAtivo(1);
         return enqueteAtivaOptional.orElse(null);
+    }
 
+    public Enquete obterResultadoEnquete() {
+        Optional<Enquete> enqueteAtivaOptional = repository.findByExibirResultado(1);
+        return enqueteAtivaOptional.orElse(null);
     }
 
     public void encerrarEnquete(){
@@ -42,6 +46,7 @@ public class EnqueteService {
         if(enquete == null)
             throw new ErroPadrao("Nenhuma enquete no momento.", HttpStatus.NOT_FOUND);
         enquete.setAtivo(0);
+        enquete.setExibirResultado(1);
         repository.save(enquete);
     }
 
@@ -56,13 +61,13 @@ public class EnqueteService {
     public void novaEnquete(EnqueteDTO enqueteDTO){
         if(obterEnqueteAtiva() != null)
             throw new ErroPadrao("Há uma enquete em votação. Encerre-a para poder criar outra.", HttpStatus.FORBIDDEN);
-        Enquete enquete = new Enquete(
-                Math.toIntExact(repository.count()) + 1,
-                enqueteDTO.getPergunta(),
-                enqueteDTO.getTempo(),
-                1,
-                LocalDateTime.now()
-        );
+        Enquete enquete = new Enquete();
+            enquete.setId(Math.toIntExact(repository.count()) + 1);
+            enquete.setPergunta(enqueteDTO.getPergunta());
+            enquete.setTempo(enqueteDTO.getTempo());
+            enquete.setAtivo(1);
+            enquete.setExibirResultado(0);
+            enquete.setData_hora(LocalDateTime.now());
         repository.save(enquete);
     }
 }

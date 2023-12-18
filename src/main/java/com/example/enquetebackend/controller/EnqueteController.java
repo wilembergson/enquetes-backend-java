@@ -1,6 +1,8 @@
 package com.example.enquetebackend.controller;
 
 import com.example.enquetebackend.dto.EnqueteDTO;
+import com.example.enquetebackend.dto.AtualizarResultadoStatusDTO;
+import com.example.enquetebackend.dto.ResultadoDTO;
 import com.example.enquetebackend.entity.Enquete;
 import com.example.enquetebackend.service.EnqueteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/enquete")
@@ -31,6 +34,20 @@ public class EnqueteController {
     public ResponseEntity<Enquete> ativa(){
         Enquete enquete = service.obterEnqueteAtiva();
         return  ResponseEntity.ok(enquete);
+    }
+
+    @GetMapping("/obter-resultado")
+    public ResponseEntity<ResultadoDTO> obterResultado(){
+        ResultadoDTO enquete = service.obterResultadoEnquete();
+        if (enquete == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return  ResponseEntity.ok(enquete);
+    }
+
+    @PutMapping("/atualizar-resultado-status/{id}")
+    public void ativarResultado(@PathVariable Integer id, @RequestBody AtualizarResultadoStatusDTO exibirResultadoDTO){
+        service.mudarStatusResultadoEnquete(id, exibirResultadoDTO.getStatus());
     }
 
     @PutMapping("/encerrar")

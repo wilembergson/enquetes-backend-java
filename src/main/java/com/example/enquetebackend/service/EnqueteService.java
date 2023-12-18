@@ -59,7 +59,7 @@ public class EnqueteService {
                 .collect(Collectors.toList())
                 .size();
 
-        return new ResultadoDTO(
+        ResultadoDTO resultadoDTO =  new ResultadoDTO(
                 enquete.getPergunta(),
                 aprovar,
                 reaprovar,
@@ -67,9 +67,13 @@ public class EnqueteService {
                 enquete.getVotos().size(),
                 encontrarResultado(aprovar, reaprovar)
         );
+        return resultadoDTO;
     }
 
     public void mudarStatusResultadoEnquete(Integer id, Integer status) {
+        Optional<Enquete> resultadoAtivo = repository.findByExibirResultado(1);
+        if(resultadoAtivo.isPresent() && status.equals(1))
+            throw new ErroPadrao("Já existe um resultado em exibição. Finalize-o para exibir outro.", HttpStatus.CONFLICT);
         Optional<Enquete> foundEnquete = repository.findById(id);
         if (foundEnquete.isEmpty())
             throw new ErroPadrao("Enquete não encontrada.", HttpStatus.NOT_FOUND);

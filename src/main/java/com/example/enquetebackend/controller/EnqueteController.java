@@ -40,7 +40,7 @@ public class EnqueteController {
     public ResponseEntity<ResultadoDTO> obterResultado(){
         ResultadoDTO enquete = service.obterResultadoEnquete();
         if (enquete == null) {
-            return ResponseEntity.notFound().build();
+            return null;
         }
         return  ResponseEntity.ok(enquete);
     }

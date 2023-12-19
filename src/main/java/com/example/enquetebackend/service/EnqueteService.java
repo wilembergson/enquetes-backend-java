@@ -72,8 +72,12 @@ public class EnqueteService {
 
     public void mudarStatusResultadoEnquete(Integer id, Integer status) {
         Optional<Enquete> resultadoAtivo = repository.findByExibirResultado(1);
-        if(resultadoAtivo.isPresent() && status.equals(1))
-            throw new ErroPadrao("Já existe um resultado em exibição. Finalize-o para exibir outro.", HttpStatus.CONFLICT);
+        if(resultadoAtivo.isPresent() && status.equals(1)){
+            Enquete enq = resultadoAtivo.get();
+            enq.setExibirResultado(0);
+            repository.save(enq);
+        }
+        //throw new ErroPadrao("Já existe um resultado em exibição. Finalize-o para exibir outro.", HttpStatus.CONFLICT);
         Optional<Enquete> foundEnquete = repository.findById(id);
         if (foundEnquete.isEmpty())
             throw new ErroPadrao("Enquete não encontrada.", HttpStatus.NOT_FOUND);

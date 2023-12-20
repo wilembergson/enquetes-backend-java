@@ -45,6 +45,15 @@ public class EnqueteController {
         return  ResponseEntity.ok(enquete);
     }
 
+    @GetMapping("/obter-resultado/{id}")
+    public ResponseEntity<ResultadoDTO> obterResultadoPorId(@PathVariable Integer id){
+        ResultadoDTO enquete = service.obterResultadoEnquetePorId(id);
+        if (enquete == null) {
+            return null;
+        }
+        return  ResponseEntity.ok(enquete);
+    }
+
     @PutMapping("/atualizar-resultado-status/{id}")
     public void ativarResultado(@PathVariable Integer id, @RequestBody AtualizarResultadoStatusDTO exibirResultadoDTO){
         service.mudarStatusResultadoEnquete(id, exibirResultadoDTO.getStatus());

@@ -42,32 +42,14 @@ public class EnqueteService {
         Optional<Enquete> enqueteComResultadoAtivoOptional = repository.findByExibirResultado(1);
         if (enqueteComResultadoAtivoOptional.isEmpty()) return null;
         Enquete enquete = enqueteComResultadoAtivoOptional.get();
-        List<Voto> votos = enquete.getVotos();
+        return resultadoEnquete(enquete);
+    }
 
-        int aprovar = votos.stream()
-                .filter(item -> item.getResposta().equals(RespostasEnum.getById(1).getDescricao()))
-                .collect(Collectors.toList())
-                .size();
-
-        int reaprovar = votos.stream()
-                .filter(item -> item.getResposta().equals(RespostasEnum.getById(2).getDescricao()))
-                .collect(Collectors.toList())
-                .size();
-
-        int abster = votos.stream()
-                .filter(item -> item.getResposta().equals(RespostasEnum.getById(3).getDescricao()))
-                .collect(Collectors.toList())
-                .size();
-
-        ResultadoDTO resultadoDTO =  new ResultadoDTO(
-                enquete.getPergunta(),
-                aprovar,
-                reaprovar,
-                abster,
-                enquete.getVotos().size(),
-                encontrarResultado(aprovar, reaprovar)
-        );
-        return resultadoDTO;
+    public ResultadoDTO obterResultadoEnquetePorId(Integer id) {
+        Optional<Enquete> enqueteComResultadoAtivoOptional = repository.findById(id);
+        if (enqueteComResultadoAtivoOptional.isEmpty()) return null;
+        Enquete enquete = enqueteComResultadoAtivoOptional.get();
+        return resultadoEnquete(enquete);
     }
 
     public void mudarStatusResultadoEnquete(Integer id, Integer status) {
@@ -116,6 +98,34 @@ public class EnqueteService {
         repository.save(enquete);
     }
 
+    private ResultadoDTO resultadoEnquete(Enquete enquete){
+        List<Voto> votos = enquete.getVotos();
+
+        int aprovar = votos.stream()
+                .filter(item -> item.getResposta().equals(RespostasEnum.getById(1).getDescricao()))
+                .collect(Collectors.toList())
+                .size();
+
+        int reaprovar = votos.stream()
+                .filter(item -> item.getResposta().equals(RespostasEnum.getById(2).getDescricao()))
+                .collect(Collectors.toList())
+                .size();
+
+        int abster = votos.stream()
+                .filter(item -> item.getResposta().equals(RespostasEnum.getById(3).getDescricao()))
+                .collect(Collectors.toList())
+                .size();
+
+        ResultadoDTO resultadoDTO =  new ResultadoDTO(
+                enquete.getPergunta(),
+                aprovar,
+                reaprovar,
+                abster,
+                enquete.getVotos().size(),
+                encontrarResultado(aprovar, reaprovar)
+        );
+        return resultadoDTO;
+    }
     private static String encontrarResultado(int a, int b) {
         if (a > b) {
             return RespostasEnum.getById(1).getDescricao();

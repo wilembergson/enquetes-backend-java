@@ -88,13 +88,15 @@ public class EnqueteService {
     public void novaEnquete(EnqueteDTO enqueteDTO) {
         if (obterEnqueteAtiva() != null)
             throw new ErroPadrao("Há uma enquete em votação. Encerre-a para poder criar outra.", HttpStatus.FORBIDDEN);
+        LocalDateTime agora = LocalDateTime.now();
         Enquete enquete = new Enquete();
         enquete.setId(Math.toIntExact(repository.count()) + 1);
         enquete.setPergunta(enqueteDTO.getPergunta());
         enquete.setTempo(enqueteDTO.getTempo());
         enquete.setAtivo(1);
         enquete.setExibirResultado(0);
-        enquete.setData_hora(LocalDateTime.now());
+        enquete.setData_hora(agora);
+        enquete.setData_cronometro(agora.plusMinutes(enqueteDTO.getTempo()));
         repository.save(enquete);
     }
 

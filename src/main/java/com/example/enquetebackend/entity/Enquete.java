@@ -38,6 +38,9 @@ public class Enquete {
     @Column(name="DT_CADASTRO")
     private LocalDateTime data_hora;
 
+    @Column(name="DT_CRONOMETRO")
+    private LocalDateTime data_cronometro;
+
     @OneToMany(mappedBy = "enquete", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Voto> votos;

@@ -82,6 +82,7 @@ public class EnqueteService {
         if (enquete == null)
             throw new ErroPadrao("Nenhuma enquete no momento.", HttpStatus.NOT_FOUND);
         enquete.setTempo(tempo);
+        enquete.setData_cronometro((LocalDateTime.now()).plusMinutes(tempo));
         repository.save(enquete);
     }
 

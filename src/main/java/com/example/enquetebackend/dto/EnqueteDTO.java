@@ -11,5 +11,5 @@ public class EnqueteDTO {
 
     private String pergunta;
 
-    private Integer tempo;
+    //private Integer tempo;
 }

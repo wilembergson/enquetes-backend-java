@@ -93,11 +93,11 @@ public class EnqueteService {
         Enquete enquete = new Enquete();
         enquete.setId(Math.toIntExact(repository.count()) + 1);
         enquete.setPergunta(enqueteDTO.getPergunta());
-        enquete.setTempo(enqueteDTO.getTempo());
+        enquete.setTempo(0);
         enquete.setAtivo(1);
         enquete.setExibirResultado(0);
         enquete.setData_hora(agora);
-        enquete.setData_cronometro(agora.plusMinutes(enqueteDTO.getTempo()));
+        enquete.setData_cronometro(agora);
         repository.save(enquete);
     }
 

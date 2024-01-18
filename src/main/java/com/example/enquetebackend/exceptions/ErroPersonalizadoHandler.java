@@ -1,6 +1,7 @@
 package com.example.enquetebackend.exceptions;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,12 @@ public class ErroPersonalizadoHandler {
     }
 
     @ExceptionHandler(JWTVerificationException.class)
-    public ResponseEntity<Object> handleTokenExpiredException(JWTVerificationException ex) {
+    public ResponseEntity<Object> handleTokenVerificationException(JWTVerificationException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("mensagem", ex.getMessage()));
+    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<Object> handleTokenExpiredException(TokenExpiredException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("mensagem", ex.getMessage()));
     }
 }

@@ -4,10 +4,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.example.enquetebackend.entity.Usuario;
 import com.example.enquetebackend.exceptions.ErroPadrao;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -42,8 +44,22 @@ public class TokenService {
                     .build()
                     .verify(token)
                     .getSubject();
-        }catch (JWTVerificationException e){
-            throw new JWTVerificationException("Falha na verificação do token JWT.", e);
+        }catch (TokenExpiredException e){
+            throw new TokenExpiredException("Sessão expirada.", e.getExpiredOn());
+        }
+    }
+
+    public ResponseEntity validarTokenRequest(String token){
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            var jwtUsuario = JWT.require(algorithm)
+                    .withIssuer("autorizacao-api")
+                    .build()
+                    .verify(token)
+                    .getSubject();
+            return ResponseEntity.ok().body(jwtUsuario);
+        }catch (TokenExpiredException e){
+            throw new TokenExpiredException("Sessão expirada.", e.getExpiredOn());
         }
     }
 

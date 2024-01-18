@@ -7,6 +7,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.enquetebackend.entity.Usuario;
 import com.example.enquetebackend.exceptions.ErroPadrao;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -41,12 +42,12 @@ public class TokenService {
                     .build()
                     .verify(token)
                     .getSubject();
-        }catch (JWTVerificationException exception){
-            return "";
+        }catch (JWTVerificationException e){
+            throw new JWTVerificationException("Falha na verificação do token JWT.", e);
         }
     }
 
     private Instant tempoExpiracao(){
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusMinutes(1).toInstant(ZoneOffset.of("-03:00"));
     }
 }

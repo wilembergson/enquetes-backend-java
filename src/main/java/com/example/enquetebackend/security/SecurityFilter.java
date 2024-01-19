@@ -1,5 +1,6 @@
 package com.example.enquetebackend.security;
 
+import com.example.enquetebackend.exceptions.ErroPadrao;
 import com.example.enquetebackend.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -26,14 +28,21 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var token = this.recuperarToken(request);
-        if (token != null) {
-            var login = tokenService.validarToken(token);
-            UserDetails user = usuarioRepository.findByLogin(login);
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        try{
+            var token = this.recuperarToken(request);
+            if (token != null) {
+                var login = tokenService.validarToken(token);
+                UserDetails user = usuarioRepository.findByLogin(login);
+                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+            filterChain.doFilter(request, response);
+        }catch (ErroPadrao e){
+            response.setStatus(e.getStatusCode().value());
+            response.setCharacterEncoding("UTF-8");
+            String jsonErrorMessage = "{\"mensagem\":\"" + e.getMessage() + "\"}";
+            response.getWriter().write(jsonErrorMessage);
         }
-        filterChain.doFilter(request, response);
     }
 
     private String recuperarToken(HttpServletRequest request){

@@ -3,6 +3,7 @@ package com.example.enquetebackend.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.example.enquetebackend.entity.Usuario;
@@ -37,7 +38,7 @@ public class TokenService {
     }
 
     public String validarToken(String token){
-        try {
+        try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
                     .withIssuer("autorizacao-api")
@@ -45,21 +46,9 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         }catch (TokenExpiredException e){
-            throw new TokenExpiredException("Sessão expirada.", e.getExpiredOn());
-        }
-    }
-
-    public ResponseEntity validarTokenRequest(String token){
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            var jwtUsuario = JWT.require(algorithm)
-                    .withIssuer("autorizacao-api")
-                    .build()
-                    .verify(token)
-                    .getSubject();
-            return ResponseEntity.ok().body(jwtUsuario);
-        }catch (TokenExpiredException e){
-            throw new TokenExpiredException("Sessão expirada.", e.getExpiredOn());
+            throw new ErroPadrao("Sessão expirada.", HttpStatus.FORBIDDEN);
+        }catch (JWTDecodeException e){
+            throw new ErroPadrao("Token inválido.", HttpStatus.FORBIDDEN);
         }
     }
 
